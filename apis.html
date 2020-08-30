@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APIs</title>
+    <link rel="stylesheet" href="../base.css">
+</head>
+<body>
+    <header><h1>AJAX</h1></header>
+    <img class="dog" src="" alt="">
+    <script>
+      const endpoint = 'https://dog.ceo/api/breeds/image/random';
+      const endPoint = 'https://cat-fact.herokuapp.com/facts';
+      const div = document.querySelector('div');
+      const petaPromise = fetch(endpoint);
+      const image = document.querySelector('img');
+
+      function handleError(err) {
+        console.log('I am sorry');
+        console.log(err);
+      }
+
+      async function go() {
+        let response = await petaPromise;
+        let data = await response.json();
+        facts = data.all;
+        const html = facts.map(fact => {
+          return `
+          <h3>${fact.text}</h3>
+          `
+        }).join('');
+        div.innerHTML = html;
+      }
+
+      petaPromise.then(response => {
+        return response.json();
+      })
+      .then(data => {
+        console.log(data);
+        image.src = data.message;
+      })
+      .catch(handleError);
+
+      go();
+    </script>
+</body>
+</html>
